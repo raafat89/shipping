@@ -1,0 +1,62 @@
+<!-- BREAD CRUMB NAVIGATOR PANEL -->
+<div class="bread_crumb_module">
+    <div class="bread_crumb">	
+        <ul>
+            <li><a href="/dashboard">Home</a></li>
+            <li><?php echo $this->title; ?></li>
+        </ul>
+    </div><!-- end bread_crumb div -->
+</div><!-- end bread_crumb_module div -->
+<div class="clear"></div>
+
+<!-- SYSTEM MESSAGES -->
+<?php if (is_array($this->messages) && count($this->messages) > 0) { ?>
+    <div id="messages">
+        <ul>
+            <?php foreach ($this->messages as $message) { ?>
+                <li><?php echo $message; ?></li>
+            <?php } ?>
+        </ul>
+    </div><!-- end messages div -->
+<?php } ?>
+
+<div class="form_options">
+    [ <a href="/variables/allergen">Create New Item Allergens</a> ]
+</div>
+
+<table class="variables_table" width="840">
+    <thead>
+        <tr>
+            <th colspan=5 class="top-header">Allergens Manager</th>
+        </tr>
+        <tr>
+            <th width="100" class="form-header">Item Key</th>
+            <th width="400" class="form-header">Allergens</th>
+            <th width="50" class="form-header">Organic</th>
+            <th width="50" class="form-header">Cooler</th>
+            <th width="30" class="form-header"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        $row = 0;
+        $accessallergen = Utility_Functions::canUserAccess("/variables/allergen");
+        foreach ($this->entries as $entry) {
+            ?>
+            <tr class="row_<?php echo $row % 2; ?>" id="<?php echo $entry['allergens_id']; ?>">
+                <td><?php echo $entry['allergens_item']; ?></td>
+                <td><?php echo $entry['allergens_data']; ?></td>
+                <td><?php echo ($entry['allergens_organic'] == 1) ? 'Yes' : 'No'; ?></td>
+                <td><?php echo ($entry['allergens_cooler'] == 1) ? 'Yes' : 'No'; ?></td>
+                <td>
+    <?php if ($accessallergen) { ?>
+                        <a href="/variables/allergen/id/<?php echo $entry['allergens_id']; ?>">
+                            <img title="edit the selected unit's information" src="/images/icons/famfam/pencil.png" />
+                        </a>
+    <?php } ?>
+                </td>
+            </tr>
+            <?php ++$row; ?>
+<?php } ?>
+    </tbody>
+</table>

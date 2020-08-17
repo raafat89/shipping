@@ -1,0 +1,84 @@
+<!-- SYSTEM MESSAGES -->
+<?php if (is_array($this->messages) && count($this->messages) > 0) { ?>
+    <div id="messages">
+        <ul>
+            <?php foreach ($this->messages as $message) { ?>
+                <li><?php echo $message; ?></li>
+            <?php } ?>
+        </ul>
+    </div><!-- end messages div -->
+<?php } ?>
+<h3 id="printing_labels" class="top-header"><b>Printing Labels</b></h3>
+<div id="mid_content">
+    <div id="upload_input">
+        <div id="scan_input" > 
+            <table id="form">
+                <tr><td colspan="4" class="top-header">Orders loaded</td></tr>
+                <tr>
+                    <td class="form-header">Order</td>
+                    <td class="form-header">Items</td>
+                    <td class="form-header">labels</td>
+                    <td class="form-header"></td>
+                </tr>
+                <tbody>
+                    <?php if (isset($this->orders)) {
+                        foreach ($this->orders as $order) {
+                            ?>
+                            <tr>
+                                <td class="form-element"><?php echo $order['bol']; ?></td>
+                                <td class="form-element"><?php echo $order['item']; ?></td>
+                                <td class="form-element"><?php echo $order['label']; ?></td>
+                                <td class="form-element">
+                                    <a href="/shipping/deleteorder/id/<?php echo $order['bol']; ?>">
+                                        <img title="Delete Order" src="/images/icons/famfam/delete.png" />
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php }
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+        <form class="uploadform" method="post" enctype="multipart/form-data" action='/shipping/upload'>
+            <table id="form">
+                <tbody>
+                    <tr><td colspan="2" class="top-header">Upload File</td></tr>                              
+                    <tr>
+                        <td class="form-header">Type</td>
+                        <td class="form-element">
+                            <input type="radio" name="type" value="amazon" <?php echo ($this->entries['type'] == "amazon" || $this->entries['type'] == "" ) ? 'checked="checked"' : ''; ?>/>Amazon
+                            <input type="radio" name="type" value="iherb" <?php echo ($this->entries['type'] == "iherb" ) ? 'checked="checked"' : ''; ?>/>IHERB
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="form-header">
+                            File
+                        </td>
+                        <td class="form-element">
+                            <input type="file" name="imagefile" style="width: 380px;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="form-header">
+                            Line #
+                        </td>
+                        <td class="form-element">
+                            <input type="text" name="line" size="1" value=""/> (Pick Line to upload for multiple lots for amazon only)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: center;">
+                            <input type="submit" value="Submit" name="submitbtn"  id="submitbtn"/>
+
+                            <div id="btn_loader" ></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <div id='viewimage'></div>
+    <div id="print"></div>
+
+</div>

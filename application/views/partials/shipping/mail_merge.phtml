@@ -1,0 +1,11 @@
+PO_Number,DC_Number,Recipient,Address,City,State,Zip,Label
+<?php $i=1; ?><?php foreach( $this->data as $row ) { ?>
+<?php echo $row['PO_Num'].", ".
+    $row['custkey'].", ".
+    str_replace(",", ".", $row['custname']).", ".
+    str_replace(",", ".", $row['shipaddr1']." ".$row['shipaddr2']).", ".
+    $row['shipcity'].", ".
+    $row['shipstate'].", ".
+    $row['shipzip'].", ".
+    $i." of ".count($this->data)." cases\n"; ?><?php ++$i; ?>
+<?php } ?>

@@ -1,0 +1,62 @@
+<!-- BREAD CRUMB NAVIGATOR PANEL -->
+<div class="bread_crumb_module">
+    <div class="bread_crumb">	
+        <ul>
+            <li><a href="/dashboard">Home</a></li>
+            <li><?php echo $this->title; ?></li>
+        </ul>
+    </div><!-- end bread_crumb div -->
+</div><!-- end bread_crumb_module div -->
+<div class="clear"></div>
+
+<!-- SYSTEM MESSAGES -->
+<?php if (is_array($this->messages) && count($this->messages) > 0) { ?>
+    <div id="messages">
+        <ul>
+            <?php foreach ($this->messages as $message) { ?>
+                <li><?php echo $message; ?></li>
+            <?php } ?>
+        </ul>
+    </div><!-- end messages div -->
+<?php } ?>
+<div class="table_top_options">
+    <div class="options_section">[ <a href="/shipping/asin">Create New ASN</a> ]</div>
+    <div class="clear"></div>
+</div><!-- end table_top_options -->
+
+<table class="user_table" width="840" style="margin: 0 auto; border: 1px solid black;">
+    <thead>
+        <tr>
+            <th colspan="5" class="top-header">ASN Codes</th>
+        </tr>
+        <tr>
+            <th width="20" >#</th>
+            <th width="200">ASN</th>
+            <th width="200">UPC</th>
+            <th width="200">Item Code</th>
+            <th width="50"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        $i = 0;
+        $editasn = Utility_Functions::canUserAccess("/shipping/asin");
+        foreach ($this->codes as $code) {
+            $i++;
+            ?>
+            <tr>
+                <td><?php echo $i; ?></td>
+                <td><?php echo $code['asin']; ?></td>
+                <td><?php echo $code['upc']; ?></td>
+                <td><?php echo $code['sku']; ?></td>
+                <td>
+                    <?php if ($editasn) { ?>
+                        <a href="/shipping/asin/id/<?php echo $code['id']; ?>">
+                            <img title="edit ASN data" src="/images/icons/famfam/pencil.png" />
+                        </a>
+                    <?php } ?>
+                </td>
+            </tr>
+        <?php } ?>
+    </tbody>
+</table>

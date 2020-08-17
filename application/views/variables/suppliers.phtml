@@ -1,0 +1,71 @@
+<!-- BREAD CRUMB NAVIGATOR PANEL -->
+<div class="bread_crumb_module">
+    <div class="bread_crumb">	
+        <ul>
+            <li><a href="/dashboard">Home</a></li>
+            <li><?php echo $this->title; ?></li>
+        </ul>
+    </div><!-- end bread_crumb div -->
+</div><!-- end bread_crumb_module div -->
+<div class="clear"></div>
+
+<!-- SYSTEM MESSAGES -->
+<?php if (is_array($this->messages) && count($this->messages) > 0) { ?>
+    <div id="messages">
+        <ul>
+            <?php foreach ($this->messages as $message) { ?>
+                <li><?php echo $message; ?></li>
+            <?php } ?>
+        </ul>
+    </div><!-- end messages div -->
+<?php } ?>
+
+<div class="form_options">
+    [ <a href="/variables/supplier">Create New Supplier</a> ]
+</div>
+
+<table class="variables_table" width="840">
+    <thead>
+        <tr>
+            <th colspan=4 class="top-header">Supplier Manager</th>
+        </tr>
+        <tr>
+            <th width="150" class="form-header">Supplier Code</th>
+            <th width="400" class="form-header">Supplier Name</th>
+            <th width="75" class="form-header">Status</th>
+            <th width="50" class="form-header"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        $row = 0;
+        $accesssupplier = Utility_Functions::canUserAccess("/variables/supplier");
+        $accesssupplieractivate = Utility_Functions::canUserAccess("/variables/supplieractivate");
+        $accesssupplierdeactivate = Utility_Functions::canUserAccess("/variables/supplierdeactivate");
+        foreach ($this->suppliers as $supplier) {
+            ?>
+            <tr class="row_<?php echo $row % 2; ?>" id="<?php echo $supplier['supplier_id']; ?>">
+                <td><?php echo $supplier['supplier_code']; ?></td>
+                <td><?php echo $supplier['supplier_name']; ?></td>
+                <td><?php echo ( $supplier['supplier_active'] == 1 ) ? "Active" : "Inactive"; ?></td>
+                <td>
+    <?php if ($accesssupplier) { ?>
+                        <a href="/variables/supplier/id/<?php echo $supplier['supplier_id']; ?>">
+                            <img title="edit the selected supplier's information" src="/images/icons/famfam/pencil.png" />
+                        </a>
+                    <?php } ?>
+    <?php if ($supplier['supplier_active'] == 1 && $accesssupplierdeactivate) { ?>
+                        <a class="variables_deactivate" href="/variables/supplierdeactivate/page/<?php echo $this->page; ?>/id/<?php echo $supplier['supplier_id']; ?>">
+                            <img title="deactivate the selected supplier" src="/images/icons/famfam/delete.png" />
+                        </a>
+    <?php } else if ($supplier['supplier_active'] == 0 && $accesssupplieractivate) { ?>
+                        <a class="variables_activate" href="/variables/supplieractivate/page/<?php echo $this->page; ?>/id/<?php echo $supplier['supplier_id']; ?>">
+                            <img title="activate the selected supplier" src="/images/icons/famfam/add.png" />
+                        </a>
+    <?php } ?>
+                </td>
+            </tr>
+            <?php ++$row; ?>
+<?php } ?>
+    </tbody>
+</table>

@@ -1,0 +1,53 @@
+<!-- BREAD CRUMB NAVIGATOR PANEL -->
+<div class="bread_crumb_module">
+	<div class="bread_crumb">	
+		<ul>
+			<li><a href="/dashboard">Home</a></li>
+			<li><?php echo $this->title; ?></li>
+		</ul>
+	</div><!-- end bread_crumb div -->
+</div><!-- end bread_crumb_module div -->
+<div class="clear"></div>
+
+<!-- SYSTEM MESSAGES -->
+<?php if( is_array($this->messages) && count($this->messages) > 0 ) { ?>
+	<div id="messages">
+		<ul>
+		<?php foreach( $this->messages as $message ) { ?>
+			<li><?php echo $message; ?></li>
+		<?php } ?>
+		</ul>
+	</div><!-- end messages div -->
+<?php } ?>
+
+<div class="form_options">[ <a href="/shipping/asins">Cancel</a> ]</div>
+
+<form method="post" action="">
+    <input type="hidden" name="id" value="<?php echo $this->data['id']; ?>" />
+	<table id="form">
+    	<tr>
+        	<td colspan=2 class="top-header">ASN Manager</td>
+        </tr>
+        
+        <tr>
+            <td class="form-header">ASN</td>
+            <td class="form-field"><?php echo $this->form->asin; ?></td>
+        </tr>
+
+        <tr>
+            <td class="form-header">UPC</td>
+            <td class="form-field"><?php echo $this->form->upc; ?></td>
+        </tr>
+        
+        <tr>
+            <td class="form-header">SKU</td>
+            <td class="form-field"><?php echo $this->form->sku; ?></td>
+        </tr>
+        
+        <tr>
+        	<td colspan=2 class="form-submit">
+                    <?php echo $this->form->submit; ?>
+                </td>
+        </tr>
+	</table>
+</form>

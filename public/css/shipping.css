@@ -1,0 +1,221 @@
+/* CSS Document */
+
+/*******************************
+ * Form */
+
+#form {
+    border:     1px solid #666;
+    margin:     auto;
+    padding:    5px;
+    text-align: left;
+}
+.form-header {
+    background:     url("/images/bar_header.png") center repeat-x;
+    padding-left:   5px;
+    padding-right:  5px;
+    padding-top:    5px;
+    padding-bottom: 5px;
+    border:         1px solid #999;
+    font-weight:    bold;
+}
+.form-field {
+    padding-left:  4px;
+    padding-right: 4px;
+    border:        1px solid #999;
+} 
+.form_options {
+    text-align:    right;
+    width:         850px;
+    margin:        auto;
+    margin-bottom: 5px;
+}
+.form_options a         { color: #900; }
+.form_options a:link    { color: #900; }
+.form_options a:visited { color: #900; }
+.form_options a:hover   { color: #F00; }
+.form_options a:active  { color: #F00; }
+.form_options a:focus   { color: #F00; }
+
+/*******************************
+* Shipping Tables */
+
+table.shipping_table, table.shipping_sort_table {
+    padding:    0px;
+    margin:     auto;
+    text-align: left;
+    border:     1px solid #666;
+    width:      797px;
+    border-spacing: 0; 
+}
+
+table.shipping_table tbody tr.row_1, table.shipping_sort_table tbody tr.row_1 { border: none; background: #CCC; }
+table.shipping_sort_table tbody tr td,table.shipping_sort_table thead tr th{
+    padding: 5px;
+    border-top: 1px solid grey;
+    border-right: 1px solid grey;
+}
+/* DATA TABLES */
+
+.dataTables_filter{
+    margin: 0 auto;
+    padding: 2px;
+}
+
+.dataTables_filter label{
+    margin-top: 7px;
+    margin-right: 7px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.dataTables_filter label input { 
+    border: 1px solid #c4c4c4; 
+    height: 20px; 
+    width: 200px; 
+    font-size: 14px; 
+    padding: 4px 4px 4px 4px; 
+    border-radius: 4px; 
+    -moz-border-radius: 4px; 
+    -webkit-border-radius: 4px; 
+    box-shadow: 0px 0px 8px #d9d9d9; 
+    -moz-box-shadow: 0px 0px 8px #d9d9d9; 
+    -webkit-box-shadow: 0px 0px 8px #d9d9d9; 
+    text-align: center;
+    font-style:italic;
+    font-weight: bold;
+} 
+
+.dataTables_filter label input:focus { 
+    outline: none; 
+    border: 1px solid #7bc1f7; 
+    box-shadow: 0px 0px 8px #7bc1f7; 
+    -moz-box-shadow: 0px 0px 8px #7bc1f7; 
+    -webkit-box-shadow: 0px 0px 8px #7bc1f7; 
+} 
+
+.dataTables_filter label input { 
+    border: 1px solid #c4c4c4; 
+    height: 20px; 
+    width: 200px; 
+    font-size: 14px; 
+    padding: 4px 4px 4px 4px; 
+    border-radius: 4px; 
+    -moz-border-radius: 4px; 
+    -webkit-border-radius: 4px; 
+    box-shadow: 0px 0px 8px #d9d9d9; 
+    -moz-box-shadow: 0px 0px 8px #d9d9d9; 
+    -webkit-box-shadow: 0px 0px 8px #d9d9d9; 
+    text-align: center;
+    font-style:italic;
+    font-weight: bold;
+} 
+
+.dataTables_filter label input:focus { 
+    outline: none; 
+    border: 1px solid #7bc1f7; 
+    box-shadow: 0px 0px 8px #7bc1f7; 
+    -moz-box-shadow: 0px 0px 8px #7bc1f7; 
+    -webkit-box-shadow: 0px 0px 8px #7bc1f7; 
+} 
+
+
+.btn_submit {
+    color: #000;
+    font-weight: bold;
+    width: 127px;
+    height: 35px;
+    background: transparent url(/images/rounded_button.png) no-repeat top left;
+    border: none;
+    overflow: hidden;
+    cursor: pointer;
+    cursor: hand;
+    font-size: 13px;
+}
+
+.btn_submit:hover  { background: transparent url("/images/rounded_button.png") no-repeat bottom left; }
+.btn_submit:active { background: transparent url("/images/rounded_button.png") no-repeat bottom left; }
+.btn_submit:focus  { background: transparent url("/images/rounded_button.png") no-repeat bottom left; }
+
+table.asn_table, table.asn_table_sort {
+    padding:    0px;
+    margin:     0 auto;
+    text-align: left;
+    border:     1px solid #666;
+    max-width:  980px;
+}
+
+table.asn_table thead tr th{
+    font-weight: bold;
+    background: #DDD;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: 1px solid #999;
+}
+
+table.asn_table tbody tr:nth-child(odd){
+    background-color:#CCC;
+}
+
+table.asn_table tbody tr td{
+    padding: 5px;
+    border-top: 1px solid grey;
+    border-right: 1px solid grey;
+}
+table.asn_table tbody tr td input[type=text]{
+    padding: 2px 4px;
+    border-radius: 2px;
+    font-size: 12px;
+    color: mediumblue;
+    border: 1px solid grey;
+}
+
+.not_equal {
+    border: 2px solid red;
+}
+
+h3#printing_labels{
+    line-height:24px; font-size:16px; font-weight:400; width: 930px; margin: 10px auto;
+}
+#mid_content{
+    display:table;width:800px;margin:0 auto;
+}
+#scan_input,#upload_input{
+    float: left;
+    margin-left: 5px;
+    padding: 10px 3px;
+}
+#scan_input{
+    margin: 0 auto;
+    width: 40%;
+    margin-left: 30%;
+}
+#upload_input{
+    float: none;
+}
+#submitbtn{
+    color: #000;
+    font-weight: bold;
+    width: 127px;
+    height: 35px;
+    background: transparent url("/images/rounded_button.png") no-repeat top left;
+    border: none;
+    overflow: hidden;
+    cursor: pointer;
+    cursor: hand;
+    font-size: 13px;
+}
+#submitbtn:hover{
+    background-color: darkgrey;
+}
+#print{
+    width: 800px;
+    display: block;
+    float: left;
+}
+#viewimage{
+    float: left; 
+    width: 100%; 
+    text-align: center;
+}

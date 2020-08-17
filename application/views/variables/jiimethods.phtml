@@ -1,0 +1,56 @@
+<!-- BREAD CRUMB NAVIGATOR PANEL -->
+<div class="bread_crumb_module">
+    <div class="bread_crumb">	
+        <ul>
+            <li><a href="/dashboard">Home</a></li>
+            <li><?php echo $this->title; ?></li>
+        </ul>
+    </div><!-- end bread_crumb div -->
+</div><!-- end bread_crumb_module div -->
+<div class="clear"></div>
+
+<!-- SYSTEM MESSAGES -->
+<?php if (is_array($this->messages) && count($this->messages) > 0) { ?>
+    <div id="messages">
+        <ul>
+            <?php foreach ($this->messages as $message) { ?>
+                <li><?php echo $message; ?></li>
+            <?php } ?>
+        </ul>
+    </div><!-- end messages div -->
+<?php } ?>
+
+<?php echo $this->data; ?>
+
+<div class="form_options">[ <a href="/variables/jiimethod">Create JII Method</a> ]</div>
+
+<table class="variables_table">
+    <tr>
+        <td colspan=3 class="top-header">JII Methods</td>
+    </tr>
+    <tr>
+        <td width="100" class="form-header">Code</td>
+        <td width="400" class="form-header">Description</td>
+        <td width="50" class="form-header"></td>
+    </tr>
+    <tbody>
+        <?php
+        $counter = 0;
+        $accessStatus = Utility_Functions::canUserAccess("/variables/status");
+        foreach ($this->data as $row) {
+            ?>
+            <tr class="row_<?php echo $counter % 2; ?>" id="<?php echo $row['reason_id']; ?>">
+                <td><?php echo $row['code']; ?></td>
+                <td><?php echo $row['name']; ?></td>
+                <td>
+                    <?php if ($accessStatus) { ?>
+                        <a href="/variables/jiimethod/id/<?php echo $row['jii_method_id'] . "/page/" . $this->page; ?>">
+                            <img title="edit the selected method's information" src="/images/icons/famfam/pencil.png" />
+                        </a>
+                    <?php } ?>
+                </td>
+            </tr>
+            <?php ++$counter; ?>
+        <?php } ?>
+    </tbody>
+</table>

@@ -1,0 +1,69 @@
+<!-- BREAD CRUMB NAVIGATOR PANEL -->
+<div class="bread_crumb_module">
+    <div class="bread_crumb">	
+        <ul>
+            <li><a href="/dashboard">Home</a></li>
+            <li><?php echo $this->title; ?></li>
+        </ul>
+    </div><!-- end bread_crumb div -->
+</div><!-- end bread_crumb_module div -->
+<div class="clear"></div>
+
+<!-- SYSTEM MESSAGES -->
+<?php if (is_array($this->messages) && count($this->messages) > 0) { ?>
+    <div id="messages">
+        <ul>
+            <?php foreach ($this->messages as $message) { ?>
+                <li><?php echo $message; ?></li>
+            <?php } ?>
+        </ul>
+    </div><!-- end messages div -->
+<?php } ?>
+
+<div class="form_options">
+    [ <a href="/variables/testmethod">Create New Test Method</a> ]
+</div>
+
+<table class="variables_table">
+    <thead>
+        <tr>
+            <th colspan=3 class="top-header">Test Method Manager</th>
+        </tr>
+        <tr>
+            <th width="400" class="form-header">Test Method Label</th>
+            <th width="75" class="form-header">Status</th>
+            <th width="50" class="form-header"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        $row = 0;
+        $accesstestmethod = Utility_Functions::canUserAccess("/variables/testmethod");
+        $accesstmactivate = Utility_Functions::canUserAccess("/variables/tmactivate");
+        $accesstmdeactivate = Utility_Functions::canUserAccess("/variables/tmdeactivate");
+        foreach ($this->testmethods as $testmethod) {
+            ?>
+            <tr class="row_<?php echo $row % 2; ?>" id="<?php echo $testmethod['test_method_id']; ?>">
+                <td><?php echo $testmethod['test_method']; ?></td>
+                <td><?php echo ( $testmethod['active'] == 1 ) ? "Active" : "Inactive"; ?></td>
+                <td>
+    <?php if ($accesstestmethod) { ?>
+                        <a href="/variables/testmethod/id/<?php echo $testmethod['test_method_id']; ?>">
+                            <img title="edit the selected test method's information" src="/images/icons/famfam/pencil.png" />
+                        </a>
+                    <?php } ?>
+    <?php if ($testmethod['active'] == 1 && $accesstmdeactivate) { ?>
+                        <a class="variables_deactivate" href="/variables/tmdeactivate/page/<?php echo $this->page; ?>/id/<?php echo $testmethod['test_method_id']; ?>">
+                            <img title="deactivate the selected test method" src="/images/icons/famfam/delete.png" />
+                        </a>
+    <?php } else if ($testmethod['active'] == 0 && $accesstmactivate) { ?>
+                        <a class="variables_activate" href="/variables/tmactivate/page/<?php echo $this->page; ?>/id/<?php echo $testmethod['test_method_id']; ?>">
+                            <img title="activate the selected test method" src="/images/icons/famfam/add.png" />
+                        </a>
+    <?php } ?>
+                </td>
+            </tr>
+            <?php ++$row; ?>
+<?php } ?>
+    </tbody>
+</table>

@@ -1,0 +1,58 @@
+
+    <div class="element" style="font-size:6pt;width:100%;height:100%;padding:20mm 0 20mm 0;margin:auto;">
+        <table width="100%">
+            <tr>
+                <td width="50%" class="element_s2">
+                    <table style="width:100%;margin:auto;border:none;font-size:6pt;">
+                        <tr>
+                            <td style="vertical-align:top;" rowspan="3">From:</td>
+                            <td>Jarrow Formulas &reg;, Inc.</td>
+                        </tr>
+                        <tr>
+                            <td>1824 S Robertson Blvd.</td>
+                        </tr>
+                        <tr>
+                            <td>Los Angeles, CA 90035</td>
+                        </tr>
+                    </table>
+                </td>
+                <td width="50%" class="element_s2">
+                    <table style="width:100%;margin:auto;border:none;font-size:6pt;">
+                        <tr>
+                            <td style="vertical-align:top;" rowspan="4">To:</td>
+                            <td><?php echo $this->row['name']; ?></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?php echo $this->row['address']; ?>
+                                <?php if( trim($this->row['address2']) != "" ) { ?>
+                                    <br />
+                                    <?php echo $this->row['address2']; ?>
+                                <?php } ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><?php echo $this->row['city'].", ".$this->row['state']." ".$this->row['zip']; ?></td>
+                        </tr>
+                        <tr>
+                            <td><?php echo $this->row['country']; ?></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" width="100%" class="element_s1" style="font-size:6pt;">
+                    PO # <?php echo $this->row['po_num']; ?><br />
+                    SKU # <?php echo $this->row['sku_num']; ?><br />
+                </td>
+            </tr>
+            <tr>
+                <td width="50%" class="element_s3">
+                    <?php if( $this->amazon == 1 ) { ?>
+                        <img src="<?php echo Zend_Registry::get("jw")."/images/uploads/pdfimages/carton_".$this->row['so_num'].".png";?>" width="125" height="125" />
+                    <?php } ?>
+                </td>
+                <td width="50%" class="element_s5" style="font-size:6pt;">Carton #: <?php echo $this->row['cur']; ?> of <?php echo $this->row['total']; ?></td>
+            </tr>
+        </table>
+    </div>

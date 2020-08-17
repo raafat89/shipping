@@ -1,0 +1,39 @@
+<!-- BREAD CRUMB NAVIGATOR PANEL -->
+<div class="bread_crumb_module">
+    <div class="bread_crumb">	
+        <ul>
+            <li><a href="/dashboard">Home</a></li>
+            <li><?php echo $this->title; ?></li>
+        </ul>
+    </div><!-- end bread_crumb div -->
+</div><!-- end bread_crumb_module div -->
+<div class="clear"></div>
+
+<!-- SYSTEM MESSAGES -->
+<?php if (is_array($this->messages) && count($this->messages) > 0) { ?>
+    <div id="messages">
+        <ul>
+            <?php foreach ($this->messages as $message) { ?>
+                <li><?php echo $message; ?></li>
+            <?php } ?>
+        </ul>
+    </div><!-- end messages div -->
+<?php } ?>
+
+<div class="form_options">[ <a href="/variables/bottlesizes">Cancel</a> ]</div>
+
+<form enctype="multipart/form-data" method="post" action="">
+    <?php echo $this->form->bottle_size_id; ?>
+    <table id="form">
+        <tr>
+            <td colspan=2 class="top-header">Bottle Size Manager</td>
+        </tr>
+        <tr>
+            <td class="form-header">Label</td>
+            <td class="form-field"><?php echo $this->form->bottle_size; ?></td>
+        </tr>
+        <tr>
+            <td colspan=2 class="form-submit"><?php echo $this->form->submit; ?></td>
+        </tr>
+    </table>
+</form>

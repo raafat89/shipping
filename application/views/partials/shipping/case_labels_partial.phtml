@@ -1,0 +1,71 @@
+
+    <div class="element" style="font-size:8pt;width:100%;height:100%;padding:10mm 0 10mm 0;margin:auto;">
+        <table width="100%">
+            <tr>
+                <td width="50%" class="element_s1" style="vertical-align:top;">
+                    Jarrow Formulas &reg;
+                    <?php if( $this->amazon == 1 ) { ?>
+                        <br><img src="<?php echo Zend_Registry::get("jw")."/images/uploads/pdfimages/case_".$this->row['qr_file'].".png";?>" width="125" height="125" />
+                    <?php } ?>
+                </td>
+                <td width="50%" >
+                    <table style="width:100%;margin:auto;border:none;">
+                        <tr>
+                            <td style="vertical-align:top;" rowspan="4">To:</td>
+                            <td ><?php echo $this->row['custname']; ?></td>
+                        </tr>
+                        <tr>
+                            <td >
+                                <?php echo $this->row['shipaddr1']; ?>
+                                <?php if( trim($this->row['shipaddr2']) != "" ) { ?>
+                                    <br />
+                                    <?php echo $this->row['shipaddr2']; ?>
+                                <?php } ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><?php echo $this->row['shipcity'].", ".$this->row['shipstate']." ".$this->row['shipzip']; ?></td>
+                        </tr>
+                        <tr>
+                            <td><?php echo $this->row['shipcntry']; ?></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td width="40%" class="element_s3">
+                    PO # <?php echo $this->row['PO_Num']; ?><br>
+                    CO # <?php echo $this->so_number; ?>
+                </td>
+                <td  width="60%" rowspan="2" class="element_s3" style="font-size:8pt;">
+                    <span style="font-size:8pt;">
+                        <?php if( $this->row['qr_label'] != "" ) { ?>
+                            <?php echo $this->row['qr_label']; ?>
+                        <?php } ?>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td width="50%" class="element_s4">
+                    <table style="width:100%;margin:auto;border:none;">
+                        <tr>
+                            <td style="vertical-align:top;" rowspan="3">From:</td>
+                            <td>Jarrow Formulas &reg;, Inc.</td>
+                        </tr>
+                        <tr>
+                            <td>1824 S Robertson Blvd.</td>
+                        </tr>
+                        <tr>
+                            <td>Los Angeles, CA 90035</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td width="50%" class="element_s5">&nbsp;</td>
+                <td width="50%" class="element_s5" style="font-size:10pt;">
+                    Case #: <?php echo $this->i+1; ?> of <?php echo $this->total; ?>
+                </td>
+            </tr>
+        </table>
+    </div>

@@ -1,0 +1,58 @@
+<!-- BREAD CRUMB NAVIGATOR PANEL -->
+<div class="bread_crumb_module">
+    <div class="bread_crumb">	
+        <ul>
+            <li><a href="/dashboard">Home</a></li>
+            <li><?php echo $this->title; ?></li>
+        </ul>
+    </div><!-- end bread_crumb div -->
+</div><!-- end bread_crumb_module div -->
+<div class="clear"></div>
+
+<!-- SYSTEM MESSAGES -->
+<?php if (is_array($this->messages) && count($this->messages) > 0) { ?>
+    <div id="messages">
+        <ul>
+            <?php foreach ($this->messages as $message) { ?>
+                <li><?php echo $message; ?></li>
+            <?php } ?>
+        </ul>
+    </div><!-- end messages div -->
+<?php } ?>
+
+<span style="color: #600;"><?php echo $this->error; ?></span>
+<form action="" method="post">
+    <table class="shipping_sort_table" width="850">
+        <thead>
+            <tr>
+                <th colspan="6" class="top-header">Shipping Manager</th>
+            </tr>
+            <tr>
+                <th>Code</th>
+                <th>Product Name</th>
+                <th width="65">Number</th>
+                <th width="110">UPC</th>
+                <th width="60">Weight</th>
+                <th>Case Qty</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php $i = 0; ?>
+            <?php
+            foreach ($this->paginator as $product) {
+                $qty_element = "qty_" . $product['ProductId'];
+                ?>
+                <tr class="row_<?php echo $i % 2; ?>" id="<?php echo $product['ProductNumber']; ?>">
+                    <td><?php echo $product['Code']; ?></td>
+                    <td><?php echo $product['Name']; ?></td>
+                    <td><?php echo $product['ProductNumber']; ?></td>
+                    <td><?php echo $product['UPC']; ?></td>
+                    <td><?php echo $product['weight']; ?></td>
+                    <td><?php echo $this->form->$qty_element; ?></td>
+                </tr>
+                <?php ++$i; ?>
+<?php } ?>
+        </tbody>
+    </table>
+    <div style="margin:5px auto 2px auto;font-weight:bold;font-size:14px;width:795px;text-align:right;"><?php echo $this->form->submit; ?></div>
+</form>

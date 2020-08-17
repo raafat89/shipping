@@ -1,0 +1,358 @@
+<!-- BREAD CRUMB NAVIGATOR PANEL -->
+<div class="bread_crumb_module">
+    <div class="bread_crumb">	
+        <ul>
+            <li><a href="/dashboard">Home</a></li>
+            <li><a href="/shipping/asnshipments">ASN Shipments</a></li>
+            <li><?php echo $this->title; ?></li>
+        </ul>
+    </div><!-- end bread_crumb div -->
+</div><!-- end bread_crumb_module div -->
+<div class="clear"></div>
+<!-- SYSTEM MESSAGES -->
+<?php if (is_array($this->messages) && count($this->messages) > 0) { ?>
+    <div id="messages">
+        <ul>
+            <?php foreach ($this->messages as $message) { ?>
+                <li><?php echo $message; ?></li>
+            <?php } ?>
+        </ul>
+    </div><!-- end messages div -->
+<?php }
+if (!isset($this->orderdata) && count($this->orderdata) == 0) {
+    ?>
+    <form class="show-loader" method="post" action="">
+        <table class="asn_table">
+            <tr>
+                <td colspan=2 class="top-header">Shipping Manager</td>
+            </tr>
+            <tr>
+                <td class="form-header">So Number</td>
+                <td class="form-element">
+                    <input type="text" name="order_no" id="so_number" required="required" size="12"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=2 class="form-submit">
+                    <input type="submit" name="generate" id="submit" value="Generate" class="form-element"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+<?php
+} else {
+    $dis = ($this->sps_data["complete"] == 1 ) ? 'disabled="disabled"' : '';
+    $headerdata = $this->headerdata['header'];
+    $linesdata = $this->headerdata['lines'];
+    $p_medium = ['CTN' => 'Carton', 'PLT' => 'Pallet'];
+    $p_material = ['25' => 'Corrugated or Solid', '94' => 'Wood', '76' => 'Paper', '79' => 'Plastic'];
+    $trans_code = ["" => "Select", "00" => "Not Defined", "LT" => "Less than Trailer Load (LTL)", "ZZ" => "Mutually Defined"];
+    $ship_methods = ['PP' => 'PrePaid By seller', 'CC' => 'Collect'];
+    $alpha_code = ["" => "Select",
+        "00" => "Not Defined",
+        "CTII" => "CTII-CENTRAL TRASNPORT",
+        "RDFS" => "RDFS-ROADRUNNER FREIGHT",
+        "UPGF" => "UPGF-UPS FREIGHT",
+        "UPSN" => "UPSN-UPS Main",
+        "ABFS" => "ABFS-ABF FREIGHT SYSTEMS",
+        "XJLW" => "XJLW-JB HUNT / CENTRAL TRANSPORT",
+        "EXLA" => "EXLA-ESTES EXPRESS",
+        "RETL" => "RETL-REDDAWAY",
+        "OTHERS" => "OTHERS-Other Carrier"];
+    ?>
+    <form method="post" action="" class="show-loader">
+        <input type="hidden" name="order_no" value="<?= $this->order_no; ?>"/>
+        <input type="hidden" name="header_id" value="<?= $headerdata["header_id"]; ?>"/>
+        <table class="asn_table">
+            <tr>
+                <td class="top-header">Order No</td>
+                <td class="top-header" colspan="10"><?= $this->order_no; ?></td>
+            </tr>
+            <tr>
+                <td class="form-header">Delivery Date</td>
+                <td class="form-header">Packing Medium</td>
+                <td class="form-header">Packing Material</td>
+                <td class="form-header">Carrier</td>
+                <td class="form-header">Tracking Number</td>
+                <td class="form-header" colspan="2">Shipment method</td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" name="ship_date" class="save_change" id ="ship_date" value="<?= (isset($headerdata["ship_date"]) && $headerdata["ship_date"] != '1969-12-31') ? date('m/d/Y', strtotime($headerdata["ship_date"])) : ''; ?>"  autocomplete="off" size="8" <?= $dis; ?> />
+                </td>
+                <td>
+                    <select name="pack_medium" <?= $dis; ?> >
+                        <?php foreach ($p_medium as $mdk => $med) { ?>
+                            <option <?php if ($headerdata['pack_medium'] == $mdk) echo 'selected="selected"'; ?> value="<?= $mdk ?>"><?= $med ?></option>
+                        <?php } ?>
+                    </select>
+                </td>
+                <td>
+                    <select name="pack_material" <?= $dis; ?> >
+                        <?php foreach ($p_material as $mtk => $mat) { ?>
+                            <option <?php if ($headerdata['pack_material'] == $mtk) echo 'selected="selected"'; ?> value="<?= $mtk ?>"><?= $mat ?></option>
+                        <?php } ?>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" name="carrier" class="save_change" id="carrier" value="<?= $headerdata["carrier"]; ?>" <?= $req; ?> <?= $dis; ?> size="11"/>
+                </td>
+                <td>
+                    <input type="text" name="tracking_number" class="save_change" id="tracking_number" value="<?= $headerdata["tracking_number"]; ?>" <?= $req; ?> <?= $dis; ?> size="11"/>
+                </td>
+                <td colspan="2">
+                    <select name="shipment_method"  id="shipment_method" class="save_change" <?= $dis; ?> style="width:140px;">
+                        <?php foreach ($ship_methods as $ship_method => $method_descr) { ?>
+                            <option <?php if ($headerdata['shipment_method'] == $ship_method) echo 'selected="selected"'; ?> value="<?= $ship_method ?>"><?= $method_descr; ?></option>
+                        <?php } ?>
+                    </select>
+                </td>            
+            </tr>
+            <tr>
+                <td class="form-header">Trans method Code</td>
+                <td class="form-header">Alpha Code</td>
+                <td class="form-header">Volume</td>
+                <td class="form-header">Number of pallets</td>
+                <td class="form-header">Reference no</td>
+                <td class="form-header">Seal no</td>
+                <td class="form-header">Status</td>
+            </tr>
+            <tr>
+                <td>
+                    <select name="trans_code" id="trans_code" class="" <?= $dis; ?> style="width:140px;">
+                        <?php foreach ($trans_code as $tk => $trans) { ?>
+                            <option <?php if ($headerdata['trans_code'] == $tk) echo 'selected="selected"'; ?> value="<?= $tk ?>"><?= $trans ?></option>
+                        <?php } ?>
+                    </select>
+                </td>
+                <td>
+                    <select name="alpha_code"  id="alpha_code" class="" <?= $dis; ?> style="width:140px;">
+                        <?php foreach ($alpha_code as $ak => $alpha) { ?>
+                            <option <?php if ($headerdata['alpha_code'] == $ak) echo 'selected="selected"'; ?> value="<?= $ak ?>"><?= $alpha ?></option>
+                        <?php } ?>
+                    </select>
+                </td>
+                <td><input type="text" name="volume" class="" id="volume" value="<?= $headerdata["volume"]; ?>" <?= $req; ?> <?= $dis; ?> size="4" autocomplete="off"/>CF</td>
+                <td><input type="text" name="number_of_pallets" class="" id="number_of_pallets" value="<?= $headerdata["number_of_pallets"]; ?>" <?= $req; ?> <?= $dis; ?> size="3" autocomplete="off"/></td>
+                <td><input type="text" name="reference_no" class="" id="reference_no" value="<?= $headerdata["reference_no"]; ?>" <?= $req; ?> <?= $dis; ?> size="11" autocomplete="off"/></td>
+                <td><input type="text" name="seal_no" class="" id="seal_no" value="<?= $headerdata["seal_no"]; ?>" <?= $req; ?> <?= $dis; ?> size="7" autocomplete="off"/></td>
+                <td><?php
+                    if ($this->sps_data['complete'] == 1) {
+                        echo'Complete';
+                    } else if (count($this->headerdata['lines']) > 0) {
+                        echo'Printed';
+                    } else {
+                        echo 'New';
+                    }
+                    ?>
+                </td>
+            </tr>
+        </table>
+        <table class="asn_table">
+            <thead>
+                <tr>
+                    <th>Address</th><th>Cust No</th> <th>PO</th> <th>Name</th> <th>Address</th> <th>City</th> <th>State</th> <th>Zip</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>PO</td>
+                    <td><?= $this->sps_data['cust_no'] ?></td>
+                    <td><?= $this->sps_data['po_no'] ?></td>
+                    <td><?= $this->address_info['AddressName'] ?></td>
+                    <td><?= $this->address_info['Address1'] ?></td>
+                    <td><?= $this->address_info['City'] ?></td>
+                    <td><?= $this->address_info['State'] ?></td>
+                    <td><?= $this->address_info['PostalCode'] ?></td>
+                </tr>
+                <tr>
+                    <td>INFOR</td>
+                    <td><?= $this->infor_address['customer_key'] ?></td>
+                    <td><?= $this->orderdata[0]['po_no'] ?></td>
+                    <td><?= $this->infor_address['AddressName'] ?></td>
+                    <td><?= $this->infor_address['Address1'] ?></td>
+                    <td><?= $this->infor_address['City'] ?></td>
+                    <td><?= $this->infor_address['State'] ?></td>
+                    <td><?= $this->infor_address['PostalCode'] ?></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="asn_table" CELLSPACING =0 style="max-width: 1100px;">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th><input type="checkbox" name="check_lines" class="check_lines" checked="checked"/></th>
+                    <th width="20">Line Seq</th>
+                    <th>Item</th>
+                    <th>Pack</th>
+                    <th>QTY Ship</th>
+                    <th>QTY Case</th>
+                    <th>Labels</th>
+                    <th width="20">Partial</th>
+                    <th>Carrier Pro #</th>
+                    <th style="width: 70px;">Label range</th>
+                    <th>Lot Number</th>
+                    <th>Exp Date</th>
+                    <th colspan="2">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $i = $z = $gros_qty = $lbl_to = 0;
+                $lbl_from = $line_no = 1;
+                $items = $line_item_nos = $items_seq = [];
+                foreach ($this->orderdata as $key => $row) {
+                    $z++;
+                    $items[$row['Item']] = (!array_key_exists($row['Item'], $items)) ? 1 : $items[$row['Item']] + 1;
+                    $line = (isset($linesdata[$row['Item']][$items[$row['Item']]])) ? $linesdata[$row['Item']][$items[$row['Item']]] : null;
+                    $gros_weight += $row['Weight'] * $row['Qty'];
+                    $qty_pei = (isset($line['QtyPei'])) ? $line['QtyPei'] : $this->pei_qty[$row['Item']];
+                    $land_qty = $row['Qty'] / $qty_pei;
+                    $labels = (int) $land_qty;
+                    $gros_qty += ceil($land_qty);
+                    $org_qty_ship = (!isset($row['line_id'])) ? $row['Qty'] : $row['org_qty_ship'];
+                    $partial = ($row['Qty'] - ($labels * $qty_pei));
+                    $items_seq[$row['Item']] = (!array_key_exists($row['Item'], $items_seq)) ? 0 : (($row['order_line'] == $line_item_no) ? $items_seq[$row['Item']] : $items_seq[$row['Item']] + 1);
+                    $line_item_no = $row['order_line'];
+                    $lbl_to = $lbl_to + $labels + (($partial > 0) ? 1 : 0);
+                    $lbl_range_txt = ($labels == 1 && $partial == 0) ? ($lbl_to + (($partial > 0) ? 1 : 0)) : ($lbl_from . '-' . ($lbl_to));
+                    $lbl_from = $lbl_to + 1;
+                    //if($partial>0 && $labels!=1) {$labels = $labels-1; $partial        =   ($row['Qty']-($labels*$qty_pei));}
+                    ?>
+                    <tr id="line_row_<?= $line_no; ?>">
+                        <td><?= $z; ?></td>
+                        <td><input name="tosend[<?= $line['line_no']; ?>]" type="checkbox" class="to_send" checked="checked"/></td>
+                        <td>
+                            <input type="hidden" name="line_id[]" value="<?= $line['line_id']; ?>"/>
+                            <input type="hidden" name="org_qty_ship[]" value="<?= $org_qty_ship; ?>" />
+                            <input type="hidden" name="line_no[]" value="<?= $line_no; ?>" />
+                            <?= isset($row['line_seq']) ? $row['line_seq'] : $this->line_sequence[trim($row['Item'])][$items_seq[$row['Item']]]; ?>
+                        </td>
+                        <td>
+                            <?= $row['Item']; ?>
+                            <input type="hidden" name="Item[]" value="<?php echo $row['Item']; ?>"/>
+                        </td>
+                        <td>
+                                <?php $p_type = ['P' => 'Pack', 'T' => 'Tare']; ?>
+                            <select name="pack_type[]" <?= $dis; ?> >
+                                <?php foreach ($p_type as $pk => $pt) { ?>
+                                    <option <?php if ($line['pack_type'] == $pk) echo 'selected="selected"'; ?> value="<?= $pk ?>"><?= $pt ?></option>
+                                <?php } ?>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" name="Qty[]" value="<?php echo $row['Qty']; ?>" id="Qty_<?= $i; ?>" class="Qty" size="1" required="required" <?= $dis; ?> />
+                        </td>
+                        <td>
+                            <input type="text" name="QtyPei[]" value="<?php echo isset($line['QtyPei']) ? $line['QtyPei'] : $this->pei_qty[$row['Item']]; ?>" id="QtyPei_<?= $i; ?>" class="Qty" size="1" required="required" <?= $dis; ?> />
+                        </td>
+
+                        <td style="text-align: center;font-weight: bold;">
+                            <span class="labels" id="labels_<?= $i; ?>"><?php echo $labels; ?> </span> 
+                        </td>
+                        <td style="text-align: center;font-weight: bold;">
+                            <span class="partials" id="part_labels_<?= $i; ?>"><?php echo ($partial > 0) ? '1(' . $partial . ')' : ''; ?> </span> 
+
+                        </td>
+                        <td><?php $tr = explode("\n", rtrim($line['track_no'], "\n"));
+                                    $rows = count($tr); ?>
+                            <textarea class="track_no" name="track_no[]" id="track_no_<?= $i; ?>"  cols="14" rows="<?= $rows; ?>"><?= $line['track_no']; ?></textarea>
+                        </td>
+                        <td style="text-align:center;">
+                            <span class="range" id="range_labels_<?= $i; ?>"><?php echo $lbl_range_txt; ?> </span>
+                        </td>
+                        <td class="<?php if (isset($line['Lot_No']) && $line['Lot_No'] != $row['Lot_No']) echo "not_equal"; ?>">
+                            <?= $row['Lot_No']; ?>
+                        </td>
+                        <td class="<?php if (isset($line['Expiration']) && strtotime($line['Expiration']) != strtotime($row['Expiration'])) echo "not_equal"; ?>">
+                            <?= date('m/d/Y', strtotime($row['Expiration'])); ?>
+                        </td>
+                        <td> <?= $row['Description']; ?> </td>
+                        <td> 
+                            <?php if ($this->sps_data["complete"] != 1 && isset($line['line_id'])) { ?>
+                                <a class="update_line" data-line="<?= $line_no; ?>" id="line_url_<?= $line_no; ?>" href="/shipping/edititem/orderno/<?= $this->order_no; ?>/line/<?= $line_no; ?>/exp_date/<?= strtotime($row['Expiration']); ?>/lot_no/<?= $row['Lot_No']; ?>/p_code/<?= $this->sps_data['partner_code']; ?>">
+                                    <img src="/images/icons/famfam/cd_edit.png" title="Update Line Labels" />
+                                </a> 
+                            <?php } ?>
+                        </td>
+                    </tr>
+        <?php ++$i;
+        $line_no++;
+    } ?>
+                <tr>
+                    <td style="text-align: right; font-weight: bold;" colspan="6"><b>Landing QTY</b></td>
+                    <td style="text-align: center; font-weight: bold; border: 1px solid black;"colspan="2">
+                        <span id="gros_qty"><?php echo $gros_qty; ?></span>
+                        <input type="hidden" name="landing_qty" id="landing_qty" value="<?php echo $gros_qty; ?>"/>
+                    </td>
+                    <td style="text-align: right; font-weight: bold;" colspan="2">Gross weight</td>
+                    <td colspan="4"><input type="text" name="gross_weight" value="<?php echo round((isset($headerdata["gross_weight"])) ? $headerdata["gross_weight"] : $gros_weight, 2); ?>" size="6" required="required" <?= $dis; ?> /></td>
+                </tr>
+                    <?php if ($this->sps_data["complete"] != 1) { ?>
+                    <tr>
+                        <td colspan="3"><b>Labels</b></td>
+                        <td colspan="4"><input type="submit" name="save" class="btn_submit" value="<?php echo (isset($headerdata['header_id'])) ? 'Re-Generate' : 'Generate'; ?> Labels"/></td>
+                        <?php if (isset($headerdata['header_id']) && $gros_qty == $headerdata['landing_qty']) { ?>
+                            <td colspan="3"><input type="submit" name="PRINT" class="btn_submit" rel="no_loader" value="Print Labels"/></td>
+                            <td colspan="4"><input type="submit" name="download_zip" class="btn_submit" rel="no_loader" value="Download ZIP"/></td>
+                        <?php } ?>
+                    </tr>
+                    <?php if (isset($headerdata['header_id']) && $gros_qty == $headerdata['landing_qty']) { ?>
+                        <tr>
+                            <td colspan="3"><b>Reprint</b></td>
+                            <td colspan="2"><b>Item no</b></td>
+                            <td colspan="3">From <input type="text" name="item_no" size="2" /> To <input type="text" name="item_no_end" size="2" /></td>
+                            <td colspan="2"><b>Copies</b> <input type="text" name="repeat_count" value="1" size="2" /></td>
+                            <td colspan="4"><input type="submit" name="reprint" value="Reprint" class="btn_submit" rel="no_loader" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><b>SPS Commerce</b></td>
+                            <td colspan="4">
+                                <?php if (is_array($this->sps_data['actions']['invoice'])) { ?>
+                                    <b>Invoice Sent</b><br>
+                                    <a target="_blank" href="/uploads/sps_xml/<?= $this->sps_data['actions']['invoice']['file'] ?>">View Invoice</a>
+                                <?php } else if ($this->orderdata[0]['invoice_no'] != '') { ?>
+                                    <input type="submit" name="invoice" rel='<?= $this->orderdata[0]['invoice_no'] ?>' class="btn_submit" value="Send Invoice"/>
+                                <?php } ?>
+                            </td>
+                            <td colspan="3">
+                                <?php if (is_array($this->sps_data['actions']['shipment'])) { ?>
+                                    <b>ASN Sent</b><br>
+                                    <a target="_blank" href="/uploads/sps_xml/<?= $this->sps_data['actions']['shipment']['file'] ?>">View ASN</a>
+                                <?php } else if ($this->orderdata[0]['invoice_no'] != '') { ?>
+                                    <input type="submit" id="XML" rel='<?= $this->orderdata[0]['invoice_no'] ?>' name="XML" class="btn_submit" value="Send ASN"/>
+                                <?php } ?>
+                            </td> 
+            <!--                    <td colspan="4">
+                                Shipment # <input type="text" name="partial_shipment_no" value="1" size="1"/>
+                                <input type="submit" id="XML_sep" rel='<?= $this->orderdata[0]['invoice_no'] ?>' name="XML_sep" class="btn_submit" value="Send Partial ASN"/>
+                            </td>-->
+                        </tr>
+                        <tr> 
+                            <td colspan="3"><b>CASI</b></td>
+                            <td colspan="4">
+                                <?php
+                                $file = glob(Zend_Registry::get("target_path") . '/uploads/barcodes/' . $this->order_no . "_ZPL/*");
+                                $countFile = 0;
+                                if ($file != false)
+                                    $countFile = count($file);
+                                if ($countFile == $headerdata['landing_qty']) {
+                                    ?>
+                                    Sent to CASI
+                                <?php } else { ?>
+                                    <input type="submit" name="CASI" class="btn_submit" value="Send to CASI"/>
+                                <?php } ?>
+                            </td>
+                            <td colspan="7"><input type="submit" name="download" class="btn_submit" rel="no_loader" value="Download CSV"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="7" style="text-align: right;"><input type="submit" name="delete_labels" class="btn_submit" value="Delete Labels"/></td>
+                            <?php if (is_array($this->sps_data['actions']['shipment']) && is_array($this->sps_data['actions']['invoice'])) { ?>
+                                <td colspan="7" style="text-align: right;"><input type="submit" name="complete" class="btn_submit" value="Complete"/></td>
+                            <?php } ?>
+                        </tr>
+                <?php } ?>
+            <?php } ?>
+        </table>
+    </form>            
+<?php } ?>

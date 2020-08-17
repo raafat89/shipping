@@ -1,0 +1,92 @@
+<?php if (isset($this->form) && !isset($this->data)) { ?>
+
+    <!-- BREAD CRUMB NAVIGATOR PANEL -->
+    <div class="bread_crumb_module">
+        <div class="bread_crumb">	
+            <ul>
+                <li><a href="/dashboard">Home</a></li>
+                <li><?php echo $this->title; ?></li>
+            </ul>
+        </div><!-- end bread_crumb div -->
+    </div><!-- end bread_crumb_module div -->
+    <div class="clear"></div>
+
+    <!-- SYSTEM MESSAGES -->
+    <?php if (is_array($this->messages) && count($this->messages) > 0) { ?>
+        <div id="messages">
+            <ul>
+                <?php foreach ($this->messages as $message) { ?>
+                    <li><?php echo $message; ?></li>
+                <?php } ?>
+            </ul>
+        </div><!-- end messages div -->
+    <?php } ?>
+
+    <div class="form_options">[ <a href="/shipping/labels">Reload Page</a> ]</div>
+
+    <form enctype="multipart/form-data" method="post" action="">
+        <table id="form">
+            <tr>
+                <td colspan=2 class="top-header">Shipping Manager</td>
+            </tr>
+            <tr>
+                <td class="form-header">SO Number</td>
+                <td class="form-field"><?php echo $this->form->so_number; ?></td>
+            </tr>
+            <tr>
+                <td class="form-header">
+                    # of Labels<br />
+                    <div style="font-size:10px;color:#FF0000;">(leave blank to have system determine)</div>
+                </td>
+                <td class="form-field"><input type="text" name="num_labels" class="form-element" /></td>
+            </tr>
+            <tr>
+                <td class="form-header">Amazon QRCode?</td>
+                <td class="form-field">
+                    <select name="amazon" class="form-element">
+                        <option value="0" SELECTED>No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="form-header">Send To CASI</td>
+                <td class="form-field">
+                    <select name="casi" class="form-element">
+                        <option value="0" SELECTED>No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=2 class="form-submit"><?php echo $this->form->submit; ?></td>
+            </tr>
+        </table>
+    </form>
+
+<?php } else { ?>
+
+    <div style="text-align:left;width:1000px;margin:auto;">
+        <?php $total = ceil(count($this->data) / $this->max); ?>
+        Page <?php echo ($this->page + 1); ?> of <?php echo $total; ?>
+        <?php if ($this->page > 0) { ?>
+            [ <a href="/shipping/labels/so/<?php echo $this->so_number; ?>/tot/<?php echo $this->total; ?>/qr/<?php echo $this->amazon; ?>/page/<?php echo ($this->page - 1); ?>">Prev</a> ]
+        <?php } ?>
+        <?php if (($this->page + 1) < $total) { ?>
+            [ <a href="/shipping/labels/so/<?php echo $this->so_number; ?>/tot/<?php echo $this->total; ?>/qr/<?php echo $this->amazon; ?>/page/<?php echo ($this->page + 1); ?>">Next</a> ]
+        <?php } ?>
+        <br />
+        Total Labels: <?php echo count($this->data); ?><br />
+        <a href="/shipping/labels">Load New SO Order</a><br />
+    </div>
+    <br />
+
+    <object data="/images/uploads/qrcode/<?php echo $this->file; ?>" type="application/pdf" width="1000" height="900">
+
+        <p>It appears you don't have a PDF plugin for this browser.
+            No biggie... you can <a href="/images/uploads/qrcode/<?php echo $this->file; ?>">click here to
+                download the PDF file.</a></p>
+
+    </object>
+
+<?php } ?>

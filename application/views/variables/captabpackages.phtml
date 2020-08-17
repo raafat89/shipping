@@ -1,0 +1,58 @@
+<!-- BREAD CRUMB NAVIGATOR PANEL -->
+<div class="bread_crumb_module">
+    <div class="bread_crumb">	
+        <ul>
+            <li><a href="/dashboard">Home</a></li>
+            <li><?php echo $this->title; ?></li>
+        </ul>
+    </div><!-- end bread_crumb div -->
+</div><!-- end bread_crumb_module div -->
+<div class="clear"></div>
+
+<!-- SYSTEM MESSAGES -->
+<?php if (is_array($this->messages) && count($this->messages) > 0) { ?>
+    <div id="messages">
+        <ul>
+            <?php foreach ($this->messages as $message) { ?>
+                <li><?php echo $message; ?></li>
+            <?php } ?>
+        </ul>
+    </div><!-- end messages div -->
+<?php } ?>
+
+<div class="form_options">
+    [ <a href="/variables/captabpackage">Create New Cap/Tab Package</a> ]
+</div>
+<table class="variables_table" width="1100">
+    <thead>
+        <tr>
+            <th colspan="9" class="top-header">Cap/Tab Package Manager</th>
+        </tr>
+        <tr>
+            <th width="100" class="form-header">Type</th>
+            <th width="100" class="form-header">Code</th>
+            <th width="100" class="form-header">Desc</th>
+            <th width="100" class="form-header">Size</th>
+            <th width="80" class="form-header">Color</th>
+            <th width="100" class="form-header">Capsule Shell Weight (unit)</th>
+            <th width="100" class="form-header">Vegan</th>
+            <th width="100" class="form-header">Gelatin Capsule</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php $row = 0; ?>
+        <?php foreach ($this->entries as $entry) { ?>
+            <tr class="row_<?php echo $row % 2; ?>" id="<?php echo $entry['id']; ?>">
+                <td><?php echo $entry['captab_type']; ?></td>
+                <td><?php echo $entry['code']; ?></td>
+                <td><?php echo $entry['name']; ?></td>
+                <td><?php echo $entry['captab_size']; ?></td>
+                <td><?php echo $entry['captab_color']; ?></td>
+                <td><?php echo $entry['capsule_shell_weight'] . ' ' . $entry['capsule_shell_weight_unit'] . ' '; ?></td>
+                <td><?php echo ($entry['vegan'] == 1) ? 'Yes' : 'No'; ?></td>
+                <td><?php echo ($entry['gelatin_capsule'] == 1) ? 'Yes' : 'No'; ?></td>
+            </tr>
+            <?php ++$row; ?>
+        <?php } ?>
+    </tbody>
+</table>

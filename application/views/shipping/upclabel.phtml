@@ -1,0 +1,40 @@
+<!-- SYSTEM MESSAGES -->
+<?php if (is_array($this->messages) && count($this->messages) > 0) { ?>
+    <div id="messages">
+        <ul>
+            <?php foreach ($this->messages as $message) { ?>
+                <li><?php echo $message; ?></li>
+            <?php } ?>
+        </ul>
+    </div><!-- end messages div -->
+<?php } ?>
+<h3 id="printing_labels" class="top-header"><b>Generate UPC Labels</b></h3>
+
+<div id="mid_content">
+    <div id="scan_input" > 
+        <form action="" method="POST">
+            <table id="form">
+                <tr>
+                    <td colspan="2" class="top-header">Label</td>
+                </tr>
+                <tr>
+                    <td class="form-header">Item Code</td>
+                    <td class="form-header"><input type="text" name="item_code"/></td>
+                </tr>
+                <tr>
+                    <td class="form-header">UPC</td>
+                    <td class="form-header"><input type="text" name="upc"/></td>
+                </tr>
+                <tr>
+                    <td class="form-header">Copies</td>
+                    <td class="form-header"><input type="text" name="copy"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <input type="submit" value="Submit"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

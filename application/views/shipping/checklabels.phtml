@@ -1,0 +1,96 @@
+<!-- BREAD CRUMB NAVIGATOR PANEL -->
+<div class="bread_crumb_module">
+    <div class="bread_crumb">	
+        <ul>
+            <li><a href="/dashboard">Home</a></li>
+            <li><?php echo $this->title; ?></li>
+        </ul>
+    </div><!-- end bread_crumb div -->
+</div><!-- end bread_crumb_module div -->
+<div class="clear"></div>
+<!-- SYSTEM MESSAGES -->
+<?php if (is_array($this->messages) && count($this->messages) > 0) { ?>
+    <div id="messages">
+        <ul>
+            <?php foreach ($this->messages as $message) { ?>
+                <li><?php echo $message; ?></li>
+            <?php } ?>
+        </ul>
+    </div><!-- end messages div -->
+<?php } ?>
+<div class="form_options">[ <a href="/shipping/labels">Reload Page</a> ]</div>
+<form enctype="multipart/form-data" method="post" action="">
+    <table id="form">
+        <tr>
+            <td colspan=2 class="top-header">Shipping Manager</td>
+        </tr>
+        <tr>
+            <td class="form-header">SO Number</td>
+            <td class="form-field"><?php echo $this->form->so_number; ?></td>
+        </tr>
+        <tr>
+            <td colspan=2 class="form-submit"><?php echo $this->form->submit; ?></td>
+        </tr>
+    </table>
+</form>
+<?php
+if (isset($this->data) && count($this->data) > 0) {
+    $prev_index = 0;
+    $prev = "";
+    $sub_total = 0;
+    $total = 0;
+    ?>
+    <table width="600" style="margin: 0 auto;">
+        <tr>
+            <td colspan=""><?php echo $this->so_number; ?></td>
+        </tr>
+        <tr>
+            <td><b>Item Code</b></td>
+            <td><b>Qty Ordered</b></td>
+            <td><b>Qty Per Case</b></td>
+            <td><b>Calculated</b></td>
+            <td><b>Actual</b></td>
+        </tr>
+        <?php
+        foreach ($this->data as $index => $row) {
+            if ($total == 0) {
+                $prev_index = $index;
+                $prev = $row['Prod_Code'];
+            }
+            if ($prev != $row['Prod_Code']) {
+                ?>
+                <tr 
+            <?php
+            if ((int) $this->data[$prev_index]['Qty_Case']['qty_case'] <= 0 || $sub_total != $this->data[$prev_index]['Qty'] / $this->data[$prev_index]['Qty_Case']['qty_case']) {
+                echo "style='background:#CCC;'";
+            }
+            ?>
+                    >
+                    <td><?php echo $this->data[$prev_index]['Prod_Code']; ?></td>
+                    <td><?php echo $this->data[$prev_index]['Qty']; ?></td>
+                    <td><?php echo $this->data[$prev_index]['Qty_Case']['qty_case']; ?></td>
+                    <td><?php echo $sub_total; ?></td>
+                    <td><?php echo ($this->data[$prev_index]['Qty_Case']['qty_case'] > 0) ? $this->data[$prev_index]['Qty'] / $this->data[$prev_index]['Qty_Case']['qty_case'] : "Not Set"; ?></td>
+                </tr>
+                <?php
+                $prev_index = $index;
+                $prev = $row['Prod_Code'];
+                $sub_total = 0;
+            }
+            ++$sub_total;
+            ++$total;
+        }
+        ?>
+        <tr>
+            <td><?php echo $this->data[$prev_index]['Prod_Code']; ?></td>
+            <td><?php echo $this->data[$prev_index]['Qty']; ?></td>
+            <td><?php echo $this->data[$prev_index]['Qty_Case']['qty_case']; ?></td>
+            <td><?php echo $sub_total; ?></td>
+            <td><?php echo ($this->data[$prev_index]['Qty_Case']['qty_case'] > 0) ? $this->data[$prev_index]['Qty'] / $this->data[$prev_index]['Qty_Case']['qty_case'] : "Not Set"; ?></td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align: right;"><b>Total:</b></td>
+            <td><b><?php echo $total; ?></b></td>
+        </tr>
+    </table>
+<?php } ?>

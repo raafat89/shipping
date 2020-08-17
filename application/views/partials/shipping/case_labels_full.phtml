@@ -1,0 +1,16 @@
+
+    <?php $total    = count($this->data); ?>
+    <?php $this_run = ( ($total-$this->max*$this->page) > $this->max )?$this->max:($total-$this->max*$this->page); ?>
+    <?php for( $i=($this->max*$this->page); $i<($this->max*$this->page)+$this_run; ++$i ) { ?>
+
+        <div class="page">
+            <?php echo $this->partial("/partials/shipping/case_labels_partial.phtml", array(
+                "so_number" => $this->so_number,
+                "row"       => $this->data[$i],
+                "total"     => $total,
+                "i"         => $i,
+                "amazon"    => $this->amazon
+            )); ?>
+        </div>
+
+    <?php } ?>

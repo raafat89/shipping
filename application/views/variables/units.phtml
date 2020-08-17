@@ -1,0 +1,69 @@
+<!-- BREAD CRUMB NAVIGATOR PANEL -->
+<div class="bread_crumb_module">
+    <div class="bread_crumb">	
+        <ul>
+            <li><a href="/dashboard">Home</a></li>
+            <li><?php echo $this->title; ?></li>
+        </ul>
+    </div><!-- end bread_crumb div -->
+</div><!-- end bread_crumb_module div -->
+<div class="clear"></div>
+
+<!-- SYSTEM MESSAGES -->
+<?php if (is_array($this->messages) && count($this->messages) > 0) { ?>
+    <div id="messages">
+        <ul>
+            <?php foreach ($this->messages as $message) { ?>
+                <li><?php echo $message; ?></li>
+            <?php } ?>
+        </ul>
+    </div><!-- end messages div -->
+<?php } ?>
+
+<?php
+$accessunit = Utility_Functions::canUserAccess("/variables/unit");
+$accessactivate = Utility_Functions::canUserAccess("/variables/unitactivate");
+$accessdeactivate = Utility_Functions::canUserAccess("/variables/unitdeactivate");
+?>
+
+<div class="form_options">[ <a href="/variables/unit">Create New Unit of Measure</a> ]</div>
+
+<table class="variables_table" width="600">
+    <thead>
+        <tr>
+            <th colspan="6" class="top-header">Unit Manager</th>
+        </tr>
+        <tr>
+            <th width="400" class="form-header">Unit Label</th>
+            <th width="75" class="form-header">Status</th>
+            <th width="50" class="form-header">Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php $row = 0;
+        foreach ($this->units as $unit) {
+            ?>
+            <tr class="row_<?php echo $row % 2; ?>" id="<?php echo $unit['unit_id']; ?>">
+                <td><?php echo $unit['unit']; ?></td>
+                <td><?php echo ( $unit['active'] == 1 ) ? "Active" : "Inactive"; ?></td>
+                <td>
+    <?php if ($accessunit) { ?>
+                        <a href="/variables/unit/id/<?php echo $unit['unit_id']; ?>">
+                            <img title="edit the selected unit's information" src="/images/icons/famfam/pencil.png" />
+                        </a>
+                    <?php } ?>
+    <?php if ($unit['active'] == 1 && $accessdeactivate) { ?>
+                        <a class="variables_deactivate" href="/variables/unitdeactivate/page/<?php echo $this->page; ?>/id/<?php echo $unit['unit_id']; ?>">
+                            <img title="deactivate the selected unit" src="/images/icons/famfam/delete.png" />
+                        </a>
+    <?php } else if ($unit['active'] == 0 && $accessactivate) { ?>
+                        <a class="variables_activate" href="/variables/unitactivate/page/<?php echo $this->page; ?>/id/<?php echo $unit['unit_id']; ?>">
+                            <img title="activate the selected unit" src="/images/icons/famfam/add.png" />
+                        </a>
+    <?php } ?>
+                </td>
+            </tr>
+            <?php ++$row; ?>
+<?php } ?>
+    </tbody>
+</table>

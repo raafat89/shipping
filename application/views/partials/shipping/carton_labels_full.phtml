@@ -1,0 +1,15 @@
+
+    <?php $total    = count($this->data); ?>
+    <?php $this_run = ( ($total-$this->max*$this->page) > $this->max )?$this->max:($total-$this->max*$this->page); ?>
+    <?php for( $i=($this->max*$this->page); $i<($this->max*$this->page)+$this_run; ++$i ) { ?>
+
+        <div class="page">
+            <div class="page" style="width:101.6mm;height:152.4mm;margin:auto;">
+                <?php echo $this->partial("/partials/shipping/carton_labels_partial.phtml", array(
+                    "row"    => $this->data[$i],
+                    "amazon" => $this->amazon
+                )); ?>
+            </div>
+        </div>
+
+    <?php } ?>
